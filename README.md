@@ -7,14 +7,20 @@
 
 </div>
 
+<br/>
+
 # 2024 수정대동제 Web Page 
 > **성신여대 멋쟁이사자처럼 12기 X 성신여대 제36대 총학생회 '여일하게'** <br/> **개발기간: 2024.08 ~ 2024.09**
+
+<br/>
 
 ## 배포 주소
 
 > **개발 버전** :  <br>
 > **프론트 서버** : <br>
 > **백엔드 서버** : <br>
+
+<br/>
 
 ## BE팀 소개
 
@@ -23,6 +29,8 @@
 |   <img width="160px" src="https://github.com/user-attachments/assets/da4f68e6-0e49-4953-b5aa-5505ede5f963"/>    |                      <img width="160px" src="이미지 넣어주세용" />    |                   <img width="160px" src="이미지 넣어주세용"/>   |
 |   [@maeng-kim](https://github.com/maeng-kim)   |    [@서지우](https://github.com/쥬)  | [@이예령](https://github.com/령)  |
 | 성신여자대학교 컴퓨터공학과 22 | 성신여자대학교 AI융합학부 22 | 성신여자대학교 컴퓨터공학과 22 |
+
+<br/>
 
 ## 프로젝트 소개
 
