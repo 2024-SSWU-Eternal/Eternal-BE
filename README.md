@@ -26,8 +26,8 @@
 
 |      김현수       |          서지우         |       이예령        |                                                                                                               
 | :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | 
-|   <img width="160px" src="https://github.com/user-attachments/assets/da4f68e6-0e49-4953-b5aa-5505ede5f963"/>    |                      <img width="160px" src="이미지 넣어주세용" />    |                   <img width="160px" src="이미지 넣어주세용"/>   |
-|   [@maeng-kim](https://github.com/maeng-kim)   |    [@서지우](https://github.com/쥬)  | [@이예령](https://github.com/령)  |
+|   <img width="160px" src="https://github.com/user-attachments/assets/da4f68e6-0e49-4953-b5aa-5505ede5f963"/>    |                      <img width="160px" src="https://github.com/user-attachments/assets/74795992-f276-46d8-83d5-0b67c3f9beba" />    |                   <img width="160px" src="이미지 넣어주세용"/>   |
+|   [@maeng-kim](https://github.com/maeng-kim)   |    [@westjiuuu](https://github.com/westjiuuu)  | [@이예령](https://github.com/령)  |
 | 성신여자대학교 컴퓨터공학과 22 | 성신여자대학교 AI융합학부 22 | 성신여자대학교 컴퓨터공학과 22 |
 
 <br/>
