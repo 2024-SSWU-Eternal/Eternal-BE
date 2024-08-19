@@ -41,11 +41,12 @@ public class NoticeController {
         Notice notice = noticeService.getNoticeById(id);
 
         Map<String, Object> response = new HashMap<>();
+        response.put("notice_id", notice.getNoticeId());
         response.put("title", notice.getTitle());
         response.put("content", notice.getContent());
         response.put("createdAt", formatDate(notice.getCreatedAt()));
+        response.put("modifiedAt", formatDate(notice.getModifiedAt()));  // 수정된 날짜 출력
 
-        // 이미지 파일 URL 리스트를 제공
         List<String> imageUrls = notice.getImages().stream()
                 .map(image -> "/images/" + image.getSavedFilename())
                 .collect(Collectors.toList());
@@ -61,11 +62,12 @@ public class NoticeController {
         List<Map<String, Object>> response = notices.stream()
                 .map(notice -> {
                     Map<String, Object> map = new HashMap<>();
+                    map.put("notice_id", notice.getNoticeId());
                     map.put("title", notice.getTitle());
                     map.put("content", notice.getContent());
                     map.put("createdAt", formatDate(notice.getCreatedAt()));
+                    map.put("modifiedAt", formatDate(notice.getModifiedAt()));  // 수정된 날짜 출력
 
-                    // 이미지 파일 URL 리스트를 제공
                     List<String> imageUrls = notice.getImages().stream()
                             .map(image -> "/images/" + image.getSavedFilename())
                             .collect(Collectors.toList());
@@ -78,6 +80,21 @@ public class NoticeController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateNotice(
+            @PathVariable Long id,
+            @ModelAttribute NoticeDto noticeDto,
+            @RequestParam(value = "images", required = false) List<MultipartFile> imageFiles
+    ) {
+        noticeService.updateNotice(id, noticeDto, imageFiles);
+        return ResponseEntity.ok("Notice updated successfully!");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteNotice(@PathVariable Long id) {
+        noticeService.deleteNotice(id);
+        return ResponseEntity.ok("Notice deleted successfully!");
+    }
 
     private String formatDate(LocalDateTime dateTime) {
         return dateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
