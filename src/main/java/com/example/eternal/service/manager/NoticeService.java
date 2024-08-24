@@ -1,12 +1,12 @@
-package com.example.eternal.service;
+package com.example.eternal.service.manager;
 
-import com.example.eternal.dto.NoticeDto;
-import com.example.eternal.entity.Image;
-import com.example.eternal.entity.Notice;
-import com.example.eternal.entity.Manager;
-import com.example.eternal.repository.ImageRepository;
-import com.example.eternal.repository.ManagerRepository;
-import com.example.eternal.repository.NoticeRepository;
+import com.example.eternal.dto.manager.NoticeDto;
+import com.example.eternal.entity.manager.Image;
+import com.example.eternal.entity.manager.Notice;
+import com.example.eternal.entity.manager.Manager;
+import com.example.eternal.repository.manager.ImageRepository;
+import com.example.eternal.repository.manager.ManagerRepository;
+import com.example.eternal.repository.manager.NoticeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

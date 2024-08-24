@@ -1,4 +1,4 @@
-package com.example.eternal.dto;
+package com.example.eternal.dto.manager;
 
 public class ManagerLoginRequest {
     private String username;

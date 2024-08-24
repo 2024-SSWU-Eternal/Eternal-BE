@@ -1,7 +1,7 @@
-package com.example.eternal.controller;
+package com.example.eternal.controller.manager;
 
-import com.example.eternal.dto.ManagerLoginRequest;
-import com.example.eternal.service.ManagerService;
+import com.example.eternal.dto.manager.ManagerLoginRequest;
+import com.example.eternal.service.manager.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

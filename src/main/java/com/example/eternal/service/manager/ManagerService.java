@@ -1,6 +1,6 @@
-package com.example.eternal.service;
+package com.example.eternal.service.manager;
 
-import com.example.eternal.repository.ManagerRepository;
+import com.example.eternal.repository.manager.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

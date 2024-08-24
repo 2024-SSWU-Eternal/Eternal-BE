@@ -1,4 +1,4 @@
-package com.example.eternal.entity;
+package com.example.eternal.entity.manager;
 
 import jakarta.persistence.*;
 import lombok.Data;

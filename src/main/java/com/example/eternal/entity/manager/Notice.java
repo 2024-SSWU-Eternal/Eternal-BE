@@ -1,9 +1,8 @@
-package com.example.eternal.entity;
+package com.example.eternal.entity.manager;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.eternal.dto;
+package com.example.eternal.dto.manager;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;

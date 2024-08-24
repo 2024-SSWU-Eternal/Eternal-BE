@@ -1,8 +1,8 @@
-package com.example.eternal.controller;
+package com.example.eternal.controller.manager;
 
-import com.example.eternal.dto.NoticeDto;
-import com.example.eternal.entity.Notice;
-import com.example.eternal.service.NoticeService;
+import com.example.eternal.dto.manager.NoticeDto;
+import com.example.eternal.entity.manager.Notice;
+import com.example.eternal.service.manager.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

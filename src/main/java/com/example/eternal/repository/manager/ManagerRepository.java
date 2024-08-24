@@ -1,6 +1,6 @@
-package com.example.eternal.repository;
+package com.example.eternal.repository.manager;
 
-import com.example.eternal.entity.Manager;
+import com.example.eternal.entity.manager.Manager;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
