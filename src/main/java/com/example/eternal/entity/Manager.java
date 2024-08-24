@@ -1,4 +1,4 @@
-package com.example.eternal.entity.manager;
+package com.example.eternal.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

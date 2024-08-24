@@ -1,6 +1,6 @@
 package com.example.eternal.repository.manager;
 
-import com.example.eternal.entity.manager.Notice;
+import com.example.eternal.entity.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
