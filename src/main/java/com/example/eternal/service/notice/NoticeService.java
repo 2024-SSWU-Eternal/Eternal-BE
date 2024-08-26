@@ -4,6 +4,8 @@ import com.example.eternal.dto.notice.NoticeRequestDto;
 import com.example.eternal.entity.Image;
 import com.example.eternal.entity.Notice;
 import com.example.eternal.entity.Manager;
+import com.example.eternal.example.InvalidRequestException;
+import com.example.eternal.example.ResourceNotFoundException;
 import com.example.eternal.repository.manager.ImageRepository;
 import com.example.eternal.repository.manager.ManagerRepository;
 import com.example.eternal.repository.manager.NoticeRepository;
@@ -35,8 +37,17 @@ public class NoticeService {
 
     @Transactional
     public Notice createNotice(NoticeRequestDto noticeDto, List<MultipartFile> imageFiles, String userId) {
+        if (noticeDto == null || noticeDto.getTitle() == null || noticeDto.getTitle().isEmpty() ||
+                noticeDto.getContent() == null || noticeDto.getContent().isEmpty()) {
+            throw new InvalidRequestException("Title and content must not be empty");
+        }
+
+        if (userId == null || userId.isEmpty()) {
+            throw new InvalidRequestException("User ID must not be null or empty");
+        }
+
         Manager manager = managerRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Notice notice = new Notice();
         notice.setTitle(noticeDto.getTitle());
