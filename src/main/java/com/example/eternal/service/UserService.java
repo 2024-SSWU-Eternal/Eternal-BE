@@ -18,9 +18,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final VerificationService verificationService;
 
     // 회원가입 로직
     public void registerUser(RegisterRequest request) {
+        // 이메일 인증 확인
+        if (!verificationService.verifyCode(request.getEmail(), request.getVerificationCode())) {
+            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
+        }
+
         User user = new User();
         user.setStudentNumber(request.getStudentNumber()); // 학번 설정
         user.setName(request.getName());
@@ -43,3 +49,4 @@ public class UserService {
         return null; // 인증 실패 시 null 반환
     }
 }
+s
