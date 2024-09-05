@@ -73,7 +73,7 @@ public class NoticeController {
         dto.setCreatedAt(formatDate(notice.getCreatedAt()));
         dto.setModifiedAt(formatDate(notice.getModifiedAt()));
         dto.setImages(notice.getImages().stream()
-                .map(image -> "/images/" + image.getSavedFilename())
+                .map(image -> noticeService.generateS3ImageUrl(image.getSavedFilename()))  // S3 URL 생성
                 .collect(Collectors.toList()));
         return dto;
     }

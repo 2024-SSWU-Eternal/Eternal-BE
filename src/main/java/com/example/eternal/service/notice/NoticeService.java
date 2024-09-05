@@ -1,5 +1,9 @@
 package com.example.eternal.service.notice;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.eternal.dto.notice.NoticeRequestDto;
 import com.example.eternal.entity.Image;
 import com.example.eternal.entity.Notice;
@@ -10,16 +14,13 @@ import com.example.eternal.repository.manager.ImageRepository;
 import com.example.eternal.repository.manager.ManagerRepository;
 import com.example.eternal.repository.manager.NoticeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +36,19 @@ public class NoticeService {
     @Autowired
     private ImageRepository imageRepository;
 
+    @Autowired
+    private AmazonS3 amazonS3; // S3 클라이언트
+
+    @Value("${cloud.aws.s3.bucketName}")
+    private String bucketName;
+
+    public Notice getNoticeById(Long id) {
+        return noticeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Notice not found"));
+    }
+    public List<Notice> getAllNotices() {
+        return noticeRepository.findAll();
+    }
     @Transactional
     public Notice createNotice(NoticeRequestDto noticeDto, List<MultipartFile> imageFiles, String userId) {
         if (noticeDto == null || noticeDto.getTitle() == null || noticeDto.getTitle().isEmpty() ||
@@ -56,11 +70,11 @@ public class NoticeService {
         notice.setModifiedAt(LocalDateTime.now());
         notice.setManager(manager);
 
-        noticeRepository.save(notice);  // Notice 저장
+        noticeRepository.save(notice);
 
         if (imageFiles != null && !imageFiles.isEmpty()) {
             for (MultipartFile file : imageFiles) {
-                Image image = saveImage(file, notice);
+                Image image = uploadImageToS3(file, notice); // S3에 이미지 업로드
                 if (image != null) {
                     imageRepository.save(image);
                 }
@@ -69,7 +83,6 @@ public class NoticeService {
 
         return notice;
     }
-
     @Transactional
     public Notice updateNotice(Long id, NoticeRequestDto noticeDto, List<MultipartFile> imageFiles) {
         Notice notice = noticeRepository.findById(id)
@@ -82,14 +95,8 @@ public class NoticeService {
         // 기존 이미지 삭제 로직
         if (!notice.getImages().isEmpty()) {
             for (Image image : notice.getImages()) {
-                imageRepository.delete(image);  // 기존 이미지 삭제
-                // 실제 파일도 삭제하려면 아래 코드 추가
-                Path filePath = Paths.get(System.getProperty("user.dir") + "/uploaded-images/", image.getSavedFilename());
-                try {
-                    Files.deleteIfExists(filePath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                imageRepository.delete(image);  // 이미지 엔티티 삭제
+                deleteImageFromS3(image.getSavedFilename()); // S3에서 이미지 삭제
             }
             notice.getImages().clear();  // Notice에서 이미지 리스트도 비움
         }
@@ -97,7 +104,7 @@ public class NoticeService {
         // 새로운 이미지 추가 로직
         if (imageFiles != null && !imageFiles.isEmpty()) {
             for (MultipartFile file : imageFiles) {
-                Image image = saveImage(file, notice);
+                Image image = uploadImageToS3(file, notice); // S3에 이미지 업로드
                 if (image != null) {
                     imageRepository.save(image);  // 새로운 이미지 저장
                 }
@@ -116,13 +123,7 @@ public class NoticeService {
         if (!notice.getImages().isEmpty()) {
             for (Image image : notice.getImages()) {
                 imageRepository.delete(image);  // 이미지 엔티티 삭제
-                // 실제 파일도 삭제하려면 아래 코드 추가
-                Path filePath = Paths.get(System.getProperty("user.dir") + "/uploaded-images/", image.getSavedFilename());
-                try {
-                    Files.deleteIfExists(filePath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                deleteImageFromS3(image.getSavedFilename()); // S3에서 이미지 삭제
             }
         }
 
@@ -130,49 +131,43 @@ public class NoticeService {
         noticeRepository.delete(notice);
     }
 
-    public Notice getNoticeById(Long id) {
-        return noticeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Notice not found"));
-    }
-
-    public List<Notice> getAllNotices() {
-        return noticeRepository.findAll();
-    }
-
-    private Image saveImage(MultipartFile imageFile, Notice notice) {
+    // S3에 이미지 업로드
+    private Image uploadImageToS3(MultipartFile imageFile, Notice notice) {
         if (imageFile == null || imageFile.isEmpty()) {
             return null;
         }
 
         try {
-            String currentDir = System.getProperty("user.dir");
-            String uploadDir = currentDir + "/uploaded-images/";
             String originalFilename = imageFile.getOriginalFilename();
             String extension = originalFilename != null ? originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
             String newFilename = UUID.randomUUID().toString() + extension;
 
-            Path uploadPath = Paths.get(uploadDir);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            // S3에 파일 업로드
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(imageFile.getContentType()); // Content-Type 설정
 
-            Path filePath = uploadPath.resolve(newFilename);
-            imageFile.transferTo(filePath.toFile());
+            amazonS3.putObject(new PutObjectRequest(bucketName, newFilename, imageFile.getInputStream(), metadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
 
             Image image = new Image();
             image.setOriginalFilename(originalFilename);
-            image.setSavedFilename(newFilename);
+            image.setSavedFilename(newFilename);  // 암호화된 파일명을 savedFilename에 저장
             image.setNotice(notice);
 
             return image;
 
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Failed to save image", e);
+            throw new RuntimeException("Failed to upload image", e);
         }
     }
 
-    private String formatDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
+    // S3에서 파일을 조회할 때 사용할 URL 생성
+    public String generateS3ImageUrl(String savedFilename) {
+        return amazonS3.getUrl(bucketName, savedFilename).toString();
+    }
+    // S3에서 이미지 삭제
+    private void deleteImageFromS3(String fileName) {
+        amazonS3.deleteObject(bucketName, fileName);
     }
 }
