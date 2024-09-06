@@ -21,5 +21,5 @@ public class User {
     private String email;          // 이메일
     private String password;       // 비밀번호
     private boolean allowed;       // 약관 동의 여부
-
+    private String verificationCode; // 인증번호
 }
