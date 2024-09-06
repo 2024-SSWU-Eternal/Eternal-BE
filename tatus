@@ -1,0 +1,42 @@
+[33mcommit aa447cb31ac44f1ad4668c4825cf178a428908c0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfix-user[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/fix-user[m[33m)[m
+Merge: b31a6a6 9af471d
+Author: westjuuu <westjiuuu@naver.com>
+Date:   Mon Aug 19 00:56:54 2024 +0900
+
+    Merge branch 'main' of https://github.com/2024-SSWU-Eternal/Eternal-BE
+
+[33mcommit b31a6a630400d12829e4b86e4f60817cb2bf9b57[m
+Author: westjuuu <westjiuuu@naver.com>
+Date:   Mon Aug 19 00:52:42 2024 +0900
+
+    Restructure project directories
+
+[33mcommit 97d6f9d212d663123e8de105e229868eb1e73e9e[m
+Author: westjuuu <westjiuuu@naver.com>
+Date:   Mon Aug 19 00:30:49 2024 +0900
+
+    Initial commit
+
+[33mcommit 9af471ddf983c7160924114f621edfe98e1cc803[m
+Author: westjiuuu <138380856+westjiuuu@users.noreply.github.com>
+Date:   Thu Aug 15 14:10:17 2024 +0900
+
+    Update README.md
+
+[33mcommit 440670571c192021bfaecc94be3632141e22e8d0[m
+Author: maeng <89590797+maeng-kim@users.noreply.github.com>
+Date:   Tue Aug 13 19:04:39 2024 +0900
+
+    Update README.md
+
+[33mcommit 609ce3da69032e5b558f36edf6823f451dfe25fc[m
+Author: maeng <89590797+maeng-kim@users.noreply.github.com>
+Date:   Tue Aug 13 18:26:04 2024 +0900
+
+    Update README.md
+
+[33mcommit 76db8e4f7b3bc86e0059396dd921d843be39ac10[m
+Author: maeng <89590797+maeng-kim@users.noreply.github.com>
+Date:   Mon Aug 12 23:41:15 2024 +0900
+
+    Initial commit
