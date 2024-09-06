@@ -22,21 +22,22 @@ public class StampService {
     @Autowired
     private UserRepository userRepository;
 
-    // 특정 스탬프 획득 (QR 코드에 따라 호출됨)
     public void acquireStamp(int stampNum, Integer studentNumber) {
-        User user = userRepository.findByStudentNumber(studentNumber).orElseThrow(() ->
-                new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        // studentNumber로 사용자 조회
+        User user = userRepository.findByStudentNumber(studentNumber)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
         Stamp stamp = stampRepository.findByUserAndStampNum(user, stampNum)
                 .orElseThrow(() -> new IllegalArgumentException("해당 스탬프를 찾을 수 없습니다."));
 
-        // 스탬프가 해당 사용자에게 속해 있는지 확인
-        if (!stamp.getUser().equals(user)) {
-            throw new IllegalArgumentException("해당 스탬프는 이 사용자에게 할당되지 않았습니다.");
-        }
+        // stampSet 값을 반드시 설정해야 함
+        stamp.setStampSet(true); // 또는 false, 상황에 맞게 설정
+        stamp.setStampNum(stampNum);
 
-        stamp.setStampSet(true); // 스탬프의 상태를 true로 변경
+        stamp.setUser(user); // User를 설정하면서 studentNumber도 자동으로 설정
+       // stamp.setImage("default_image.png");
         stampRepository.save(stamp);
     }
+
 
     // 사용자의 스탬프 상태 조회
     public List<StampResponse> getStamps(Integer studentNumber) {
