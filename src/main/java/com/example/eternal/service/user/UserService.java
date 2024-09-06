@@ -34,7 +34,6 @@ public class UserService {
     }
 
     // 로그인 로직
-    // 로그인 로직
     public String authenticateUser(LoginRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
 
