@@ -1,6 +1,8 @@
 package com.example.eternal.controller.user;
 
 import com.example.eternal.dto.user.response.ApiResponse;
+import com.example.eternal.entity.User;
+import com.example.eternal.repository.user.UserRepository;
 import com.example.eternal.service.user.EmailService;
 import com.example.eternal.service.user.VerificationService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ public class EmailVerificationController {
 
     private final EmailService emailService;
     private final VerificationService verificationService;
+    private final UserRepository userRepository;
 
     // 이메일 인증 코드 전송
     @PostMapping("/user/send-verification-code")
@@ -29,10 +32,12 @@ public class EmailVerificationController {
     public ResponseEntity<ApiResponse> verifyEmail(@RequestParam String email, @RequestParam String code) {
         boolean isVerified = verificationService.verifyCode(email, code);
         if (isVerified) {
+            verificationService.markEmailAsVerified(email); // 이메일 인증 완료 처리
             verificationService.removeVerificationCode(email); // 인증 후 코드 삭제
             return ResponseEntity.ok(new ApiResponse("이메일 인증이 완료되었습니다."));
         } else {
             return ResponseEntity.status(400).body(new ApiResponse("잘못된 인증 코드입니다."));
         }
     }
+
 }

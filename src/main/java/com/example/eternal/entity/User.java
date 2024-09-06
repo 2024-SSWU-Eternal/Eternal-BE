@@ -15,13 +15,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private int studentNumber;     // 학번 (정수형)
     private String name;           // 이름
     private String email;          // 이메일
     private String password;       // 비밀번호
     private boolean allowed;       // 약관 동의 여부
-    private String verificationCode; // 인증번호
+    private boolean emailVerified; // 이메일 인증 여부 (true/false)
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stamp> stamps;

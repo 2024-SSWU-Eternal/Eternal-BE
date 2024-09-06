@@ -47,28 +47,25 @@ public class UserService {
     }
 
 
-    // 회원가입 로직
+    // 회원가입 로직 (인증된 이메일만 등록 가능)
     public Integer registerUser(RegisterRequest request) {
-        // 이메일 인증 확인
-        if (!verificationService.verifyCode(request.getEmail(), request.getVerificationCode())) {
+        if (!verificationService.isEmailVerified(request.getEmail())) {
             throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
         }
 
-        // 새 유저 생성
+        // 사용자 정보 설정 및 저장
         User user = new User();
         user.setEmail(request.getEmail());
         user.setName(request.getName());
-        // 비밀번호를 암호화하여 저장
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setStudentNumber(request.getStudentNumber());
-        user.setAllowed(request.isAllowed()); // 약관 동의 여부 설정
+        user.setAllowed(request.isAllowed());
 
-        // 유저 저장
         User savedUser = userRepository.save(user);
 
         // 기본 스탬프 설정
         createDefaultStamp(savedUser);
-        return savedUser.getStudentNumber(); // 유저 학번 반환
+        return savedUser.getStudentNumber();
     }
 
     // 기본 스탬프 설정
