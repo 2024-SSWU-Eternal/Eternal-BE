@@ -40,11 +40,12 @@ public class UserService {
             // 입력한 비밀번호와 저장된 비밀번호 비교
             if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                 // 비밀번호가 맞으면 JWT 토큰 생성 후 반환
-                return jwtTokenProvider.generateToken(user.getEmail());
+                return jwtTokenProvider.generateToken(user.getEmail(), user.getStudentNumber());
             }
         }
         return null; // 인증 실패 시 null 반환
     }
+
 
     // 회원가입 로직
     public Integer registerUser(RegisterRequest request) {
@@ -72,13 +73,18 @@ public class UserService {
 
     // 기본 스탬프 설정
     private void createDefaultStamp(User user) {
-        for (int i = 1; i <= 9; i++) {
-            Stamp stamp = new Stamp();
-            stamp.setStampNum(i);
-            stamp.setImage("images/favicon.png");  // 동일한 이미지 사용
-            stamp.setStampSet(false);  // 초기 상태는 false
-            stamp.setUser(user);
-            stampRepository.save(stamp);
+        try {
+            for (int i = 1; i <= 9; i++) {
+                Stamp stamp = new Stamp();
+                stamp.setStampNum(i);
+                System.out.println("Stamp number being set: " + i);
+                stamp.setImage("images/favicon.png");  // 동일한 이미지 사용
+                stamp.setStampSet(false);  // 초기 상태는 false
+                stamp.setUser(user);
+                stampRepository.save(stamp);
+            }
+        } catch (Exception e) {
+            System.err.println("스탬프 생성 중 오류 발생: " + e.getMessage());
         }
     }
 
@@ -87,4 +93,5 @@ public class UserService {
         String verificationCode = emailService.sendVerificationEmail(email);
         verificationService.saveVerificationCode(email, verificationCode); // 인증 코드 저장
     }
+
 }

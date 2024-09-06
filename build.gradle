@@ -38,9 +38,11 @@ dependencies {
 	implementation 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+// mailgun
+implementation 'com.mashape.unirest:unirest-java:1.4.9'
+// spring-cloud-aws
+implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
-	// mailgun
-	implementation 'com.mashape.unirest:unirest-java:1.4.9'
 }
 
 tasks.named('test') {

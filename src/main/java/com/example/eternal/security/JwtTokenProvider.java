@@ -17,13 +17,14 @@ public class JwtTokenProvider {
 
     private final long JWT_EXPIRATION = 604800000L; // 토큰 유효 기간 (7일)
 
-    // JWT 토큰 생성
-    public String generateToken(String email) {
+    // JWT 토큰 생성 - 학번 포함
+    public String generateToken(String email, Integer studentNumber) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
 
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(email) // 이메일을 주체로 설정
+                .claim("student_num", studentNumber) // 학번을 클레임에 포함
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(JWT_SECRET, SignatureAlgorithm.HS512)
@@ -39,6 +40,18 @@ public class JwtTokenProvider {
                 .getBody();
 
         return claims.getSubject();
+    }
+
+    // JWT 토큰에서 학번 추출
+    public Integer getStudentNumFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(JWT_SECRET)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        // Long으로 저장될 가능성이 있으므로 Integer로 변환 처리
+        return claims.get("student_num", Integer.class);
     }
 
     // JWT 토큰 유효성 검사
