@@ -7,30 +7,28 @@ import com.example.eternal.repository.stamp.StampRepository;
 import com.example.eternal.entity.User;
 import com.example.eternal.repository.user.UserRepository;
 import com.example.eternal.security.JwtTokenProvider;
-import com.example.eternal.service.user.VerificationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;  // PasswordEncoder로 변경
+    private final PasswordEncoder passwordEncoder;
     private final StampRepository stampRepository;
     private final VerificationService verificationService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, StampRepository stampRepository, VerificationService verificationService, JwtTokenProvider jwtTokenProvider) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, StampRepository stampRepository, VerificationService verificationService, JwtTokenProvider jwtTokenProvider, EmailService emailService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;  // PasswordEncoder 사용
+        this.passwordEncoder = passwordEncoder;
         this.stampRepository = stampRepository;
         this.verificationService = verificationService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.emailService = emailService;
     }
 
     // 로그인 로직
@@ -51,10 +49,10 @@ public class UserService {
 
     // 회원가입 로직
     public Integer registerUser(RegisterRequest request) {
-//        // 이메일 인증 확인
-//        if (!verificationService.verifyCode(request.getEmail(), request.getVerificationCode())) {
-//            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
-//        }
+        // 이메일 인증 확인
+        if (!verificationService.verifyCode(request.getEmail(), request.getVerificationCode())) {
+            throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
+        }
 
         // 새 유저 생성
         User user = new User();
@@ -88,6 +86,12 @@ public class UserService {
         } catch (Exception e) {
             System.err.println("스탬프 생성 중 오류 발생: " + e.getMessage());
         }
+    }
+
+    // 이메일 인증 코드 전송
+    public void sendVerificationEmail(String email) {
+        String verificationCode = emailService.sendVerificationEmail(email);
+        verificationService.saveVerificationCode(email, verificationCode); // 인증 코드 저장
     }
 
 }

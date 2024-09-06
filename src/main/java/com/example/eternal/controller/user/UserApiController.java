@@ -31,9 +31,11 @@ public class UserApiController {
         if (token != null) {
             // JWT 토큰을 쿠키에 설정
             Cookie cookie = new Cookie("JWT_TOKEN", token);
-            cookie.setHttpOnly(true);
+            cookie.setHttpOnly(true);          // JavaScript에서 접근 금지
+            cookie.setSecure(true);            // HTTPS에서만 전송
             cookie.setPath("/");
-            cookie.setMaxAge(24 * 60 * 60); // 1일 동안 유효
+            cookie.setMaxAge(24 * 60 * 60);    // 1일 동안 유효
+            cookie.setAttribute("SameSite", "Strict"); // CSRF 보호 강화
 
             response.addCookie(cookie);
 
@@ -49,8 +51,10 @@ public class UserApiController {
         // 쿠키에서 JWT 토큰 삭제
         Cookie cookie = new Cookie("JWT_TOKEN", null);
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(0); // 쿠키 만료
+        cookie.setAttribute("SameSite", "Strict");
 
         response.addCookie(cookie);
 

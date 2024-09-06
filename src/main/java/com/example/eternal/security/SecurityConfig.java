@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 // 인증 없이 접근 가능한 경로 설정
-                                .requestMatchers("/user/send-verification-code", "/user/verify-email", "/user/register", "/user/login", "/test").permitAll()
+                                .requestMatchers("/user/send-verification-code", "/user/verify-email", "/user/register", "/user/login", "/test", "/manager/login", "/notices/**").permitAll()
                                 // 인증이 필요한 경로 설정
                                 .requestMatchers("/user/stamp/**", "/profile").authenticated()
                                 // 그 외의 모든 요청은 인증이 필요
