@@ -23,6 +23,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      # gradle 실행 권한 추가
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
       # gradle 캐싱 - 빌드 시간 향상
       - name: Gradle Caching
         uses: actions/cache@v3
