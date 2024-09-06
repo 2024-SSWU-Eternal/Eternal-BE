@@ -77,6 +77,7 @@ public class UserService {
         for (int i = 1; i <= 9; i++) {
             Stamp stamp = new Stamp();
             stamp.setStampNum(i);
+            System.out.println("Stamp number being set: " + i);
             stamp.setImage("images/favicon.png");  // 동일한 이미지 사용
             stamp.setStampSet(false);  // 초기 상태는 false
             stamp.setUser(user);

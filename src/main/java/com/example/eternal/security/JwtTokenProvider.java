@@ -41,6 +41,15 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
+    // JWT 토큰에서 학번 추출
+    public Integer getStudentNumFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(JWT_SECRET)
+                .parseClaimsJws(token)
+                .getBody();
+        return (Integer) claims.get("student_num"); // 클레임에서 student_num 추출
+    }
+
     // JWT 토큰 유효성 검사
     public boolean validateToken(String authToken) {
         try {

@@ -23,10 +23,10 @@ public class StampService {
     private UserRepository userRepository;
 
     // 특정 스탬프 획득 (QR 코드에 따라 호출됨)
-    public void acquireStamp(int stampId, Integer studentNumber) {
+    public void acquireStamp(int stampNum, Integer studentNumber) {
         User user = userRepository.findByStudentNumber(studentNumber).orElseThrow(() ->
                 new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-        Stamp stamp = stampRepository.findById(stampId)
+        Stamp stamp = stampRepository.findByUserAndStampNum(user, stampNum)
                 .orElseThrow(() -> new IllegalArgumentException("해당 스탬프를 찾을 수 없습니다."));
 
         // 스탬프가 해당 사용자에게 속해 있는지 확인

@@ -10,6 +10,8 @@ public class Stamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long stampId;
+
     @Column(name = "stamp_num")
     private Integer stampNum;
 
