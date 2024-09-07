@@ -87,7 +87,7 @@ public class UserService {
                 stampRepository.save(stamp);
             }
         } catch (Exception e) {
-            System.err.println("스탬프 생성 중 오류 발생: " + e.getMessage());
+            System.err.println("스탬프 생성 중 오류 발생: " + e.getMessage()); //user생성 시 stamp 에러
         }
     }
 

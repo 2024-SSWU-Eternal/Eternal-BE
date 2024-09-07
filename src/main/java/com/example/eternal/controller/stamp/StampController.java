@@ -47,12 +47,17 @@ public class StampController {
 
     @GetMapping("/stamps")  // 액세스 레벨을 명확하게 설정
     public ResponseEntity<?> getStamps(HttpServletRequest request) {
-        String token = request.getHeader("Authorization").replace("Bearer ", "");
-        if (jwtTokenProvider.validateToken(token)) {
-            Integer studentNumber = jwtTokenProvider.getStudentNumFromToken(token);
-            return ResponseEntity.ok(stampService.getStamps(studentNumber));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        try {
+            String token = request.getHeader("Authorization").replace("Bearer ", "");
+            if (jwtTokenProvider.validateToken(token)) {
+                Integer studentNumber = jwtTokenProvider.getStudentNumFromToken(token);
+                return ResponseEntity.ok(stampService.getStamps(studentNumber));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+            }
+        }  catch (Exception e) {
+            log.error("Internal Server Error: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 
