@@ -49,6 +49,12 @@ public class UserService {
 
     // 회원가입 로직 (인증된 이메일만 등록 가능)
     public Integer registerUser(RegisterRequest request) {
+
+        // 이메일 중복 확인
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+        }
+
         if (!verificationService.isEmailVerified(request.getEmail())) {
             throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
         }
