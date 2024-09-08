@@ -12,8 +12,8 @@ public class CorsConfig {
     @Bean
     public CorsConfiguration corsConfiguration() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*"); // 모든 도메인 허용 (상황에 따라 설정)
-        config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+        config.addAllowedOrigin("https://sswu-eternal.com"); // 실제 도메인 허용
+        config.addAllowedOrigin("http://localhost:3000"); // 로컬 개발 환경 도메인 허용        config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
         config.addAllowedHeader("*"); // 모든 헤더 허용
         config.setAllowCredentials(true); // 인증 정보 허용
 
