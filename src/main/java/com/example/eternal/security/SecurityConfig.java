@@ -2,6 +2,7 @@ package com.example.eternal.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,6 +46,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 // 인증 없이 접근 가능한 경로 설정
                                 .requestMatchers("/user/send-verification-code", "/user/verify-email", "/user/register", "/user/login", "/test", "/manager/login", "/notices/**").permitAll()
                                 // 인증이 필요한 경로 설정
