@@ -1,0 +1,20 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/app/deploy/zip
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+hooks:
+  AfterInstall:
+    - location: scripts/start.sh
+      timeout: 60
+      runas: ec2-user
+
+  ApplicationStart:
+    - location: scripts/nginx-reload.sh
+      timeout: 60
+      runas: ec2-user
