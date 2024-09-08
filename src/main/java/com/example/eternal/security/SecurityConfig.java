@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -35,9 +36,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsFilter corsFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)  // UsernamePasswordAuthenticationFilter 앞에 CorsFilter 추가
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.addAllowedOrigin("https://sswu-eternal.com");  // 클라이언트 도메인 허용
+                    config.addAllowedOrigin("http://localhost:3000");  // 로컬 개발 허용
+                    config.addAllowedMethod("*");  // 모든 HTTP 메서드 허용
+                    config.addAllowedHeader("*");  // 모든 헤더 허용
+                    config.setAllowCredentials(true);  // 자격 증명 허용 (쿠키나 인증 헤더 허용)
+                    return config;
+                }))
                 .csrf(AbstractHttpConfigurer::disable)  // CSRF 비활성화
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(unauthorizedHandler))
@@ -45,11 +54,8 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                // 인증 없이 접근 가능한 경로 설정
                                 .requestMatchers("/user/send-verification-code", "/user/verify-email", "/user/register", "/user/login", "/test", "/manager/login", "/notices/**").permitAll()
-                                // 인증이 필요한 경로 설정
                                 .requestMatchers("/user/stamp/**", "/profile").authenticated()
-                                // 그 외의 모든 요청은 인증이 필요
                                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);  // JWT 필터 추가
