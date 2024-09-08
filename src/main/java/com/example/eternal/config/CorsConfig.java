@@ -15,6 +15,7 @@ public class CorsConfig {
         config.addAllowedOrigin("https://sswu-eternal.com"); // 실제 도메인 허용
         config.addAllowedOrigin("http://localhost:3000"); // 로컬 개발 환경 도메인 허용        config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
         config.addAllowedHeader("*"); // 모든 헤더 허용
+        config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
         config.setAllowCredentials(true); // 인증 정보 허용
 
         return config;
@@ -25,5 +26,9 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration()); // 모든 경로에 대해 CORS 설정 적용
         return source;
+    }
+    @Bean
+    public CorsFilter corsFilter() {
+        return new CorsFilter(corsConfigurationSource()); // CORS 필터 빈을 등록
     }
 }
