@@ -45,6 +45,7 @@ jobs:
           cd ./src/main/resources # resources 폴더로 이동
           touch ./application.properties # application.properties 생성
           echo "spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect" >> ./application.properties
+          echo "spring.datasource.url=${{ secrets.MYSQL_URL }}" >> ./application.properties
           echo "spring.datasource.username=${{ secrets.MYSQL_USERNAME }}" >> ./application.properties
           echo "spring.datasource.password=${{ secrets.MYSQL_PASSWORD }}" >> ./application.properties
           echo "cloud.aws.credentials.accessKey=${{ secrets.AWS_ACCESS_KEY }}" >> ./application.properties
