@@ -81,7 +81,7 @@ public class UserService {
                 Stamp stamp = new Stamp();
                 stamp.setStampNum(i);
                 System.out.println("Stamp number being set: " + i);
-                stamp.setImage("images/favicon.png");  // 동일한 이미지 사용
+                stamp.setImage("https://eternal2024.s3.ap-northeast-2.amazonaws.com/stamp-img.png");  // 동일한 이미지 사용
                 stamp.setStampSet(false);  // 초기 상태는 false
                 stamp.setUser(user);
                 stampRepository.save(stamp);
