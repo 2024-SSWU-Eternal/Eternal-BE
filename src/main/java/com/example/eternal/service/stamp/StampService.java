@@ -6,7 +6,9 @@ import com.example.eternal.entity.Stamp;
 import com.example.eternal.entity.User;
 import com.example.eternal.repository.stamp.StampRepository;
 import com.example.eternal.repository.user.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -58,3 +60,5 @@ public class StampService {
         System.out.println("모든 사용자의 스탬프를 리셋함.");
     }
 }
+
+
