@@ -10,4 +10,10 @@ import java.util.Optional;
 public interface StampRepository extends JpaRepository<Stamp, Integer> {
     List<Stamp> findByUser(User user);
     Optional<Stamp> findByUserAndStampNum(User user, int stampNum);
+
+    //리셋 코드
+    @Modifying
+    @Transactional
+    @Query("UPDATE Stamp s SET s.stampSet=false ")
+    void resetAllStampSet();
 }
