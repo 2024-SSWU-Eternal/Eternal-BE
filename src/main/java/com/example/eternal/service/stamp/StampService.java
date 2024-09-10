@@ -49,4 +49,12 @@ public class StampService {
                 .map(stamp -> new StampResponse(stamp.getStampNum(), stamp.getImage(), stamp.getStampSet()))
                 .collect(Collectors.toList());
     }
+
+    //stamp reset
+    @Transactional
+    @Scheduled(cron = "0 0 00 * * ?")
+    public void resetAllStampSet() {
+        stampRepository.resetAllStampSet();
+        System.out.println("모든 사용자의 스탬프를 리셋함.");
+    }
 }
