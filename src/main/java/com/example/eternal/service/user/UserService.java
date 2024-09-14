@@ -96,5 +96,15 @@ public class UserService {
         String verificationCode = emailService.sendVerificationEmail(email);
         verificationService.saveVerificationCode(email, verificationCode); // 인증 코드 저장
     }
+    // 이름 조회 로직 추가
+    public String getUserNameByEmail(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return user.getName();  // 이름 반환
+        }
+        throw new IllegalArgumentException("해당 이메일로 등록된 사용자를 찾을 수 없습니다.");
+    }
 
 }
