@@ -1,10 +1,14 @@
 package com.example.eternal.controller.user;
 
 import com.example.eternal.service.user.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -16,8 +20,10 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String getUserName(@AuthenticationPrincipal UserDetails userDetails) {
-        // 현재 로그인된 사용자의 이메일로 이름을 조회
-        return userService.getUserNameByEmail(userDetails.getUsername());
+    public ResponseEntity<Map<String, String>> getUserName(@AuthenticationPrincipal UserDetails userDetails) {
+        String name = userService.getUserNameByEmail(userDetails.getUsername());
+        Map<String, String> response = new HashMap<>();
+        response.put("name", name);
+        return ResponseEntity.ok(response);
     }
 }
