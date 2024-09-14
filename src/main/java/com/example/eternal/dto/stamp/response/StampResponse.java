@@ -5,11 +5,13 @@ public class StampResponse {
     private Integer stampId;
     private String stampImg;
     private Boolean status;
+    private String userName;
 
-    public StampResponse(Integer stampId, String stampImg, Boolean status) {
+    public StampResponse(Integer stampId, String stampImg, Boolean status, String name) {
         this.stampId = stampId;
         this.stampImg = stampImg;
         this.status = status;
+        this.userName = userName;
     }
 
     public Integer getStampId() {
@@ -35,4 +37,6 @@ public class StampResponse {
     public void setStatus(Boolean status) {
         this.status = status;
     }
+
+    public String getUserName() {return userName;}
 }

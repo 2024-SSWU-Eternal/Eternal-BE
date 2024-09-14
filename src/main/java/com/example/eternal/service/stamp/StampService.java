@@ -1,6 +1,5 @@
 package com.example.eternal.service.stamp;
 
-import com.example.eternal.dto.stamp.request.StampRequest;
 import com.example.eternal.dto.stamp.response.StampResponse;
 import com.example.eternal.entity.Stamp;
 import com.example.eternal.entity.User;
@@ -48,17 +47,28 @@ public class StampService {
         List<Stamp> stamps = stampRepository.findByUser(user);
 
         return stamps.stream()
-                .map(stamp -> new StampResponse(stamp.getStampNum(), stamp.getImage(), stamp.getStampSet()))
+                .map(stamp -> new StampResponse(stamp.getStampNum(), stamp.getImage(), stamp.getStampSet(), user.getName()))
                 .collect(Collectors.toList());
     }
 
     //stamp reset
     @Transactional
-    @Scheduled(cron = "0 0 00 * * ?")
+    @Scheduled(cron = "0 0 15 * * ?")
     public void resetAllStampSet() {
         stampRepository.resetAllStampSet();
         System.out.println("모든 사용자의 스탬프를 리셋함.");
     }
+
+    //stamp image return
+    public StampResponse getStampByUserAndStampNum(Integer studentNumber, int stampNum) {
+        User user = userRepository.findByStudentNumber(studentNumber)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        Stamp stamp = stampRepository.findByUserAndStampNum(user, stampNum)
+                .orElseThrow(() -> new IllegalArgumentException("해당 스탬프를 찾을 수 없습니다."));
+
+        return new StampResponse(stamp.getStampNum(), stamp.getImage(), stamp.getStampSet(), user.getName());
+    }
+
 }
 
 
