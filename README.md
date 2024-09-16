@@ -69,4 +69,4 @@
 
 ## Project Architecture
 
-![아키텍쳐](https://github.com/user-attachments/assets/34210753-e269-4585-a2b2-3fddb09da9db)
+![아키텍쳐](https://github.com/user-attachments/assets/ec38d0ff-6070-4613-8a57-e849a1bc077e)
