@@ -64,3 +64,9 @@
 ### Communication
 [![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://www.notion.so/)
 [![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/)
+
+<br/>
+
+## Project Architecture
+
+![아키텍쳐](https://github.com/user-attachments/assets/34210753-e269-4585-a2b2-3fddb09da9db)
