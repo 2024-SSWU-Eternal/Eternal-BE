@@ -17,8 +17,8 @@
 ## 배포 주소
 
 > **개발 버전** : https://sswu-eternal.com <br>
-> **프론트 서버** : https://www.eternal-server.store <br>
-> **백엔드 서버** : https://sswu-eternal.com <br>
+> **백엔드 서버** : https://www.eternal-server.store <br>
+> **프론트 서버** : https://sswu-eternal.com <br>
 
 <br/>
 
